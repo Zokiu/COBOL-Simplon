@@ -1,0 +1,5 @@
+FEUTRE     0
+REGLE      0
+COLLE      0
+CAHIER     0
+MARQUEUR   0

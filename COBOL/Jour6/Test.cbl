@@ -1,0 +1,31 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. Test.
+
+        
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       
+       01 TASKS.
+        02 TASK1 PIC X(10) VALUE "T1".
+        02 TASK2 PIC X(10) VALUE "T2".
+        02 TASK3 PIC X(10) VALUE "T3".
+        02 TASK4 PIC X(10) VALUE "T4".
+        02 TASK5 PIC X(10) VALUE "T5".
+       01 PSW PIC X(50).
+       01 NOM PIC X(50) VALUE "VOTRE NOM".
+      
+       SCREEN SECTION.
+       01 ECRAN1.
+       02 BLANK SCREEN BACKGROUND-COLOR 1.
+       02 LINE 2 COL 15 PIC X(10) TO PSW SECURE BELL AUTO.
+       02 LINE 1 COL 10 VALUE "VOTRE MOT DE PASSE".
+       02 LINE 4 COL 20 PIC X(25) USING NOM.
+       02 LINE 3 COL 11 VALUE "VOTRE NOM".
+       02 LINE 6 COL 10 PIC X(70) USING TASKS.
+       
+       PROCEDURE DIVISION.
+            
+            DISPLAY ECRAN1.
+            ACCEPT ECRAN1.
+    
+           STOP RUN.
