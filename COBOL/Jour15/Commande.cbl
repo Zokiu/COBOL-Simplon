@@ -9,7 +9,7 @@
        SELECT FICHIER-CLIENT ASSIGN TO "clients.txt"
            ORGANIZATION IS LINE SEQUENTIAL.
 
-       SELECT FICHIER-COMMANDE ASSIGN TO "commandes.txt"
+       SELECT FICHIER-COMMANDE ASSIGN TO "num-commandes.txt"
            ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
@@ -17,15 +17,18 @@
 
        FD FICHIER-CLIENT.
        01  F-CLIENT.
-           05 F-CLIENT-ID      PIC 9(08).
+           05 F-CLIENT-ID      PIC 9(02).
+           05 FILLER           PIC X(06).
            05 F-NOM            PIC X(11).
            05 F-PRENOM         PIC X(08).
 
        FD FICHIER-COMMANDE.
        01  F-COMMANDE.
-           05 F-COMMANDE-ID    PIC 9(03).
-           05 F-ARTICLE        PIC 9(04).
-           05 F-QUANTITE       PIC 9(03).
+           05 F-COMMANDE-ID    PIC 9(02).
+           05 FILLER           PIC X(01).
+           05 F-ARTICLE        PIC 9(03).
+           05 FILLER           PIC X(01).
+           05 F-QUANTITE       PIC 9(04).
 
        WORKING-STORAGE SECTION.
        
@@ -40,10 +43,10 @@
        77  WS-FIN-F-CLIENT     PIC X     VALUE "N".
 
        01  WS-COMMANDE-TABLE.
-           05 WS-COMMANDE.
-             10 WS-COMMANDE-ID PIC 9(08).
-             10 WS-ARTICLE     PIC X(11).
-             10 WS-QUANTITE    PIC X(08).
+           05 WS-COMMANDE OCCURS 17 TIMES.
+             10 WS-COMMANDE-ID PIC 9(02).
+             10 WS-ARTICLE     PIC 9(04).
+             10 WS-QUANTITE    PIC 9(03).
 
        77  WS-INDEX-COMMANDE   PIC 9(02) VALUE 1.
        77  WS-MAX-COMMANDE     PIC 9(02) VALUE 17.
@@ -80,10 +83,10 @@
                    IF WS-INDEX-CLIENT <= WS-MAX-CLIENT
                       MOVE F-CLIENT-ID     TO 
                                       WS-CLIENT-ID(WS-INDEX-CLIENT)
-                      MOVE F-CLIENT-NOM    TO 
-                                      WS-CLIENT-NOM(WS-INDEX-CLIENT)
-                      MOVE F-CLIENT-PRENOM TO 
-                                      WS-CLIENT-PRENOM(WS-INDEX-CLIENT)
+                      MOVE F-NOM    TO 
+                                      WS-NOM(WS-INDEX-CLIENT)
+                      MOVE F-PRENOM TO 
+                                      WS-PRENOM(WS-INDEX-CLIENT)
                       ADD 1 TO WS-INDEX-CLIENT
                    END-IF
              END-READ
@@ -129,8 +132,14 @@
                     IF WS-CLIENT-ID(WS-INDEX-CLIENT) = 
                                      WS-COMMANDE-ID(WS-INDEX-COMMANDE)
                         DISPLAY WS-NOM(WS-INDEX-CLIENT)
-                        DISPLAY 
-                
+                                  SPACE WITH NO ADVANCING
+                        DISPLAY WS-ARTICLE(WS-INDEX-COMMANDE)
+                                  SPACE WITH NO ADVANCING
+                        DISPLAY WS-QUANTITE(WS-INDEX-COMMANDE)
+                    END-IF
+                END-PERFORM
+           END-PERFORM.
+    
            EXIT.
        0300-OUTPUT-END.
 
